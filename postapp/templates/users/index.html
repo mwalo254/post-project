@@ -1,0 +1,128 @@
+{%extends "users/base.html"%}
+
+{% block styles %}
+<style>
+.site{
+    position: relative;
+  width: 50%;
+}
+
+.images {
+  display: block;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+  opacity: 1;
+  width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 150px;
+  
+  left: 150px;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+  transition: .5s ease;
+  opacity: 0;
+  
+}
+
+.text {
+  background-color: blueviolet;
+  color: white;
+  font-size: 25px;
+  padding: 16px 32px;
+  margin-left: 100px;
+  margin-right: 50px;
+}
+
+.site:hover .images{
+    opacity: 0.4;
+}
+.site:hover .overlay{
+    opacity: 1;
+}
+
+</style>
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Post project</title>
+</head>
+<body>
+
+        {% block content %}
+        <br><br><br>
+        <div class="container">
+
+          
+            <h1 style="text-align: center;font-size: 35px;font-family: 'Pacifico', cursive;">Welcome to our App!</h1><br>
+            <h4 style="text-align: center">Here we have posted project which have been developed with students andother developers, you can rate by clicking on the <strong>Rate</strong> button where you can choose the points on 11 by choosing on either design or usabilty andthe content. And you can also comment by cliking on <strong>Comment</strong> Button. Here is thelist of posted project and you can add your own by clicking on new project on navigation bar;</h4><br>
+               
+               <hr>
+               
+               {%for project in projects%}
+                <div class="col-md-6">
+                    
+                     <h4 style="text-align: center;font-family: Great Vibes;"><strong>Title:</strong> {{project.title}}</h4><br>
+                     
+                     
+                     <a href="{{project.link}}" target="_blank" class="site">
+
+
+                    <div class="images">
+                        <img src="{{project.image.url}}" class="img-responsive" alt="{{project.title}}" style="width: 370px; height: 300px;">
+                   </div>
+
+                   <div class="overlay">
+                       <h5 class="text">land on the page</h5>
+
+                   </div>
+                </a>
+                    
+                   
+                   
+                    <h4 style="text-align: center;font-size: 20px;font-family: Great Vibes;"><strong>{{project.user.username}}: </strong>
+                        <span>
+                          {% autoescape on %}
+                                {{project.description| safe}}
+                               {% endautoescape %}
+                              </span> </h4>
+
+                              <a href="{% url 'rating' project.id%}"><button type="submit" class="btn btn-success btn-lg">Rate</button></a><br>
+
+                              <h4><strong>Design:</strong>{{project.design }}</h4>
+                       <h4><strong>Usability:</strong>{{project.usability}}</h4>
+                       <h4><strong>Content:</strong>{{project.content}}</h4>
+                       <h4><strong>Average:</strong>{{rating}}</span></h4>
+                       
+
+                       <a href="{% url 'new-comment' project.id%}"><button type="submit" class="btn btn-primary">Comment</button></a>
+
+
+                          <p style="text-align: center;font-size: 20px;font-family: Great Vibes;">{{project.pub_date|timesince}}</p>
+              
+                        
+                          {% for com in project.comment_set.all %}
+                  <span><p><strong>{{com.user.username}}:</strong> {{com.comment}}</p></span>
+                  {%endfor%}
+        
+            
+            </div><hr>
+                {%endfor%}
+
+
+
+        </div><hr>
+
+
+        {% endblock %}
+    
+    </body>
+    </html>      
