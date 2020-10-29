@@ -25,7 +25,7 @@ def welcome(request):
     for project in projects:
         average=(project.design + project.usability + project.content)/3
         rating = round(average,2)
-    return render(request, 'users/index.html', {'user_profile':user_profile, 'projects':projects,'rating':rating,'comment':comment})
+    return render(request, 'users/index.html', {'user_profile':user_profile, 'projects':projects, 'comment':comment})
 
 
 @login_required(login_url='/accounts/login/')
